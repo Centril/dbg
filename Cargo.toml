@@ -1,0 +1,6 @@
+[package]
+name = "dbg"
+version = "0.0.1"
+authors = ["Mazdak <twingoow@gmail.com>"]
+
+[dependencies]
