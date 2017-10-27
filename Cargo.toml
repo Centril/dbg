@@ -1,6 +1,6 @@
 [package]
 name          = "dbg"
-version       = "1.0.2"
+version       = "1.0.3"
 
 description   = """dbg!(expr, ..) macro from RFC 2173 in stable Rust"""
 keywords      = ["macro", "debug"]
@@ -10,6 +10,7 @@ authors       = ["Mazdak Farrokhzad <twingoow@gmail.com>"]
 license       = "MIT/Apache-2.0"
 repository    = "https://github.com/Centril/dbg"
 documentation = "https://docs.rs/dbg/"
+readme        = "README.md"
 
 build         = "build.rs"
 
