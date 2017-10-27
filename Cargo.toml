@@ -1,6 +1,6 @@
 [package]
-name = "dbg"
-version = "1.0.1"
+name          = "dbg"
+version       = "1.0.2"
 
 description   = """dbg!(expr, ..) macro from RFC 2173 in stable Rust"""
 keywords      = ["macro", "debug"]
@@ -11,7 +11,7 @@ license       = "MIT/Apache-2.0"
 repository    = "https://github.com/Centril/dbg"
 documentation = "https://docs.rs/dbg/"
 
-build = "build.rs"
+build         = "build.rs"
 
 [build-dependencies]
 version_check = "0.1"

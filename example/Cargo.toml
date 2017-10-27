@@ -1,0 +1,15 @@
+[package]
+name          = "dbg-example"
+version       = "0.1.0"
+
+authors       = ["Mazdak Farrokhzad <twingoow@gmail.com>"]
+description   = """Example for the dbg crate"""
+keywords      = ["macro", "debug", "example"]
+categories    = ["development-tools::debugging"]
+
+license       = "MIT/Apache-2.0"
+repository    = "https://github.com/Centril/dbg"
+documentation = "https://docs.rs/dbg/"
+
+[dependencies]
+dbg = { path = "../" }

@@ -6,6 +6,26 @@
 
 #![cfg_attr(use_nightly, feature(core_intrinsics, specialization))]
 
+// Deal with specialization:
+// On nightly: typeof(expr) doesn't need to be Debug.
+#[allow(dead_code)]
+#[doc(hidden)]
+pub struct WrapDebug<T>(pub T);
+use std::fmt::{Debug, Formatter, Result};
+
+impl<T: Debug> Debug for WrapDebug<T> {
+    fn fmt(&self, f: &mut Formatter) -> Result { self.0.fmt(f) }
+}
+
+#[cfg(use_nightly)]
+impl<T> Debug for WrapDebug<T> {
+    default fn fmt(&self, f: &mut Formatter) -> Result {
+        use ::std::intrinsics::type_name;
+        write!(f, "[<unknown> of type {} is !Debug]",
+            unsafe { type_name::<T>() })
+    }
+}
+
 /// See module level documentation.
 #[macro_export]
 macro_rules! dbg {
@@ -33,24 +53,6 @@ macro_rules! dbg {
             let stderr = ::std::io::stderr();
             let mut err = ::std::io::BufWriter::new(stderr.lock());
 
-            // Deal with specialization:
-            // On nightly: typeof(expr) doesn't need to be Debug.
-            struct WrapDebug<T>(T);
-            use std::fmt::{Debug, Formatter, Result};
-
-            impl<T: Debug> Debug for WrapDebug<T> {
-                fn fmt(&self, f: &mut Formatter) -> Result { self.0.fmt(f) }
-            }
-
-            #[cfg(use_nightly)]
-            impl<T> Debug for WrapDebug<T> {
-                default fn fmt(&self, f: &mut Formatter) -> Result {
-                    use ::std::intrinsics::type_name;
-                    write!(f, "[<unknown> of type {} is !Debug]",
-                        unsafe { type_name::<T>() })
-                }
-            }
-
             // Are we in not in compact mode (detailed)?
             // If so:
             // + {:?} is used instead of {:#?},
@@ -73,7 +75,7 @@ macro_rules! dbg {
                     write!(&mut err, "{} = ", stringify!($valf)).unwrap();
 
                     // Evaluate, tmp is value:
-                    let _tmp = WrapDebug($valf);
+                    let _tmp = $crate::WrapDebug($valf);
                     // Won't get further if $val panics.
 
                     // Print out tmp:
@@ -91,7 +93,7 @@ macro_rules! dbg {
                     write!(&mut err, "{} = ", stringify!($val)).unwrap();
 
                     // Evaluate, tmp is value:
-                    let _tmp = WrapDebug($val);
+                    let _tmp = $crate::WrapDebug($val);
                     // Won't get further if $val panics.
 
                     // Print out tmp:
@@ -130,24 +132,6 @@ macro_rules! dbg {
             let stderr = ::std::io::stderr();
             let mut err = ::std::io::BufWriter::new(stderr.lock());
 
-            // Deal with specialization:
-            // On nightly: typeof(expr) doesn't need to be Debug.
-            struct WrapDebug<T>(T);
-            use std::fmt::{Debug, Formatter, Result};
-
-            impl<T: Debug> Debug for WrapDebug<T> {
-                fn fmt(&self, f: &mut Formatter) -> Result { self.0.fmt(f) }
-            }
-
-            #[cfg(use_nightly)]
-            impl<T> Debug for WrapDebug<T> {
-                default fn fmt(&self, f: &mut Formatter) -> Result {
-                    use std::intrinsics::type_name;
-                    write!(f, "[<unknown> of type {} is !Debug]",
-                        unsafe { type_name::<T>() })
-                }
-            }
-
             // Are we in not in compact mode (detailed)?
             // If so:
             // + {:?} is used instead of {:#?},
@@ -174,7 +158,7 @@ macro_rules! dbg {
                     write!(&mut err, "{} = ", stringify!($labf)).unwrap();
 
                     // Evaluate, tmp is value:
-                    let _tmp = WrapDebug($valf);
+                    let _tmp = $crate::WrapDebug($valf);
                     // Won't get further if $val panics.
 
                     // Print out tmp:
@@ -196,7 +180,7 @@ macro_rules! dbg {
                     write!(&mut err, "{} = ", stringify!($lab)).unwrap();
 
                     // Evaluate, tmp is value:
-                    let _tmp = WrapDebug($val);
+                    let _tmp = $crate::WrapDebug($val);
                     // Won't get further if $val panics.
 
                     // Print out tmp:
@@ -304,7 +288,7 @@ mod tests {
 
     test!(factorial_multiarg {
         fn factorial(n: u32) -> u32 {
-            if dbg!(n, (n <= 1)).1 {
+            if dbg!(n, n <= 1).1 {
                 dbg!(n, 1).1
             } else {
                 dbg!(n, n * factorial(n - 1)).1
@@ -318,7 +302,7 @@ mod tests {
     #[test]
     fn panics() {
         eprintln!();
-        let (a, b) = (1, 2);
-        dbg!(a, panic!(), b);
+        let (a, _b) = (1, 2);
+        dbg!(a, panic!(), _b);
     }
 }

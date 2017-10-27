@@ -1,0 +1,21 @@
+[root]
+name = "dbg-example"
+version = "0.1.0"
+dependencies = [
+ "dbg 1.0.1",
+]
+
+[[package]]
+name = "dbg"
+version = "1.0.1"
+dependencies = [
+ "version_check 0.1.3 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "version_check"
+version = "0.1.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[metadata]
+"checksum version_check 0.1.3 (registry+https://github.com/rust-lang/crates.io-index)" = "6b772017e347561807c1aa192438c5fd74242a670a6cffacc40f2defd1dc069d"
