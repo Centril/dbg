@@ -1,6 +1,6 @@
 [package]
 name          = "dbg"
-version       = "1.0.3"
+version       = "1.0.4"
 
 description   = """dbg!(expr, ..) macro from RFC 2173 in stable Rust"""
 keywords      = ["macro", "debug"]

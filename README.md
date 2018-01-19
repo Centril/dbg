@@ -6,7 +6,7 @@ To use the crate, add this to `Cargo.toml`:
 
 ```rust
 [dependencies]
-dbg = "1.0.3"
+dbg = "1.0.4"
 ```
 
 and to `lib.rs` or `main.rs` (the crate root):

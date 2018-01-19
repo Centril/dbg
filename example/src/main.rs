@@ -15,6 +15,10 @@ fn main() {
         }};
     }
 
+    test!(unit_works {
+        dbg!();
+    });
+
     // Will not work on nightly:
     test!(not_debug {        
         struct X(usize);

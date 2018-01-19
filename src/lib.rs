@@ -29,6 +29,10 @@ impl<T> Debug for WrapDebug<T> {
 /// See module level documentation.
 #[macro_export]
 macro_rules! dbg {
+    // Handle `dbg!()` <-- literal
+    () => {
+        dbg!( () );
+    };
     // Handle trailing comma:
     ($($val: expr),+,) => {
         dbg!( $($val),+ )
@@ -221,6 +225,10 @@ mod tests {
             }
         };
     }
+
+    test!(unit_works {
+        dbg!();
+    });
 
     test!(common_use {
         dbg!(Point { x: 1, y: 2 });
